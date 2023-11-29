@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         #run: dotnet test ./DotnetCodeCoverage1.sln --configuration Release --verbosity normal --no-restore --no-build --collect:"Code Coverage" --logger trx --results-directory Coverage --settings:ms.runsettings.xml
         # Ojo, no funciona con collect:"Code Coverage", solo con collect:"XPlat Code Coverage", y XPlat tenia el lio que no me excluia los assemblies!
-        run: dotnet test ./DotnetCodeCoverage1.sln --configuration Release --verbosity normal --no-restore --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory ./coverage --settings:ms.runsettings.xml
+        run: dotnet test ./DotnetCodeCoverage1.sln --configuration Release --verbosity normal --no-restore --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory ./coverage --settings:ms.runsettings.xml --exclude "[ClassLibrary2*]*"
 
       # Se movio a otra acción separada.
       # - name: ReportGenerator
@@ -64,8 +64,7 @@ jobs:
 
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
-        #if: github.event_name == 'pull_request_target'
+        if: github.event_name == 'pull_request' # Requiere permisos de escritura si el repo no es público: GitHub=>Repo=>Settings=>Actions=>General=>Workflow permissions=>(*) Read and write permissions.
         with:
           recreate: true
           path: code-coverage-results.md
