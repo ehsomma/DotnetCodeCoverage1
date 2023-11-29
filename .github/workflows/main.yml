@@ -26,7 +26,7 @@ jobs:
         run: dotnet build ./DotnetCodeCoverage1.sln --verbosity minimal --configuration Release --no-restore -p:TreatWarningsAsErrors=true
         
       - name: Run tests
-        run: dotnet test ./DotnetCodeCoverage1.sln --configuration Release --no-restore --no-build --collect:"Code Coverage" --logger trx --results-directory Coverage --settings:ms.runsettings.xml
+        run: dotnet test ./DotnetCodeCoverage1.sln --configuration Release --verbosity normal --no-restore --no-build --collect:"Code Coverage" --logger trx --results-directory Coverage --settings:ms.runsettings.xml
 
       - name: ReportGenerator
         run: |
