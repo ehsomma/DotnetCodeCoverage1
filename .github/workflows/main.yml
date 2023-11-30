@@ -33,20 +33,8 @@ jobs:
         # Ojo, no funciona con collect:"Code Coverage", solo con collect:"XPlat Code Coverage", y XPlat tenia el lio que no me excluia los assemblies!
         run: dotnet test ./DotnetCodeCoverage1.sln --configuration Release --no-restore --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory ./coverage --settings:coverage.runsettings.xml
 
-      # Se movio a otra acción separada.
-      # - name: ReportGenerator
-      #   run: |
-      #       dotnet tool install -g dotnet-reportgenerator-globaltool
-      #       reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -reporttypes:"MarkdownSummaryGithub;Cobertura" -targetDir:"CodeCoverageReport"
-
-      # - name: Upload coverage report artifact
-      #   uses: actions/upload-artifact@v1.0.0
-      #   with:
-      #     name: CoverageReport # Artifact name        
-      #     path: ./TestProject1/TestResults/CoverageReport # Directory containing files to upload
-
       - name: Coveralls
-        uses: coverallsapp/github-action@v2 #uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           format: cobertura
@@ -60,7 +48,7 @@ jobs:
           format: "markdown"
           output: "both"
           indicators: true
-          thresholds: '60 80'
+          #thresholds: '60 80'
 
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
@@ -72,30 +60,30 @@ jobs:
       - name: Write to Job Summary
         run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
-  build-reportgenerator:
-    runs-on: ubuntu-latest
+  # build-reportgenerator:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v3
+  #   steps:
+  #   - uses: actions/checkout@v3
     
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
+  #   - name: Setup .NET
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: 6.0.x
         
-    - name: Restore dependencies
-      run: dotnet restore
+  #   - name: Restore dependencies
+  #     run: dotnet restore
       
-    - name: Build
-      run: dotnet build --no-restore
+  #   - name: Build
+  #     run: dotnet build --no-restore
       
-    - name: Test
-      run: dotnet test --no-restore --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory ./coverage
+  #   - name: Test
+  #     run: dotnet test --no-restore --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory ./coverage
 
-    - name: Create code coverage report
-      run: |
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:coverage/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:'MarkdownSummaryGithub;Cobertura'
+  #   - name: Create code coverage report
+  #     run: |
+  #       dotnet tool install -g dotnet-reportgenerator-globaltool
+  #       reportgenerator -reports:coverage/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:'MarkdownSummaryGithub;Cobertura'
 
-    - name: Write to Job Summary
-      run: cat CoverageReport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+  #   - name: Write to Job Summary
+  #     run: cat CoverageReport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
