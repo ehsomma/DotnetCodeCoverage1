@@ -52,7 +52,7 @@ jobs:
 
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request' # Requiere permisos de escritura si el repo no es público: GitHub=>Repo=>Settings=>Actions=>General=>Workflow permissions=>(*) Read and write permissions.
+        if: github.event_name == 'pull_request' # Requiere permisos de escritura si el repo es privado: GitHub=>Repo=>Settings=>Actions=>General=>Workflow permissions=>(*) Read and write permissions.
         with:
           recreate: true
           path: code-coverage-results.md
@@ -60,30 +60,30 @@ jobs:
       - name: Write to Job Summary
         run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
-  # build-reportgenerator:
-  #   runs-on: ubuntu-latest
+  build-reportgenerator:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - uses: actions/checkout@v3
+    steps:
+    - uses: actions/checkout@v3
     
-  #   - name: Setup .NET
-  #     uses: actions/setup-dotnet@v3
-  #     with:
-  #       dotnet-version: 6.0.x
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
         
-  #   - name: Restore dependencies
-  #     run: dotnet restore
+    - name: Restore dependencies
+      run: dotnet restore
       
-  #   - name: Build
-  #     run: dotnet build --no-restore
+    - name: Build
+      run: dotnet build --no-restore
       
-  #   - name: Test
-  #     run: dotnet test --no-restore --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory ./coverage
+    - name: Test
+      run: dotnet test --no-restore --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory ./coverage
 
-  #   - name: Create code coverage report
-  #     run: |
-  #       dotnet tool install -g dotnet-reportgenerator-globaltool
-  #       reportgenerator -reports:coverage/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:'MarkdownSummaryGithub;Cobertura'
+    - name: Create code coverage report
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        reportgenerator -reports:coverage/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:'MarkdownSummaryGithub;Cobertura'
 
-  #   - name: Write to Job Summary
-  #     run: cat CoverageReport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+    - name: Write to Job Summary
+      run: cat CoverageReport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
