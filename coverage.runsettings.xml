@@ -9,7 +9,7 @@
           <!--<Format>json,cobertura,lcov,teamcity,opencover</Format>-->
           <Format>cobertura</Format>
 
-          <!--Esto no funca!-->
+          <!--Esto no funciona, aparentemente es un bug, hay que excluirlo desde el archivo de proyecto!-->
           <!--<Exclude>[coverlet.*.tests?]*,[*]Coverlet.Core*</Exclude>-->
           <Exclude>[ClassLibrary2.*]*</Exclude>
           <!-- [Assembly-Filter]Type-Filter -->
