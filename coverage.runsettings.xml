@@ -6,12 +6,12 @@
       <DataCollector friendlyName="XPlat code coverage">
         <!-- Documentation: https://github.com/coverlet-coverage/coverlet/blob/master/Documentation/VSTestIntegration.md#advanced-options-supported-via-runsettings -->
         <Configuration>
-          
           <!--<Format>json,cobertura,lcov,teamcity,opencover</Format>-->
           <Format>cobertura</Format>
 
           <!--Esto no funca!-->
           <!--<Exclude>[coverlet.*.tests?]*,[*]Coverlet.Core*</Exclude>-->
+          <Exclude>[ClassLibrary2.*]*</Exclude>
           <!-- [Assembly-Filter]Type-Filter -->
           <!--<Include>[coverlet.*]*,[*]Coverlet.Core*</Include>-->
           <!-- [Assembly-Filter]Type-Filter -->
